@@ -124,25 +124,29 @@ int main(){
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
-    float positions[6] ={
-        -0.5f, -0.5f,
-        0.0f, 0.5f,
-        0.5f, -0.5f
+    float positions[12] ={
+        -1.0f, 1.0f,
+        -0.97f, 1.0f,
+        -1.0f, 0.65f,
+
+        -1.0f, 0.65f,
+        -0.97f, 1.0f,
+        -0.97f, 0.65f
     };
 
     // Create a buffer and store the data into GPU memory
     unsigned int buffer;
     glGenBuffers(1,&buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6*sizeof(float), positions, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), positions, GL_STATIC_DRAW);
 
     // telling opengl the size of vertex and it properties
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*2, 0);
 
     ShaderProgramSource source = ParseShader("res/shaders/Shader.shader");
-    cout<<source.VertexSource<<endl;
-    cout<<source.FragmentSource<<endl;
+   // cout<<source.VertexSource<<endl;
+   // cout<<source.FragmentSource<<endl;
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
     glUseProgram(shader);
 
@@ -152,7 +156,7 @@ int main(){
        // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawArrays(GL_TRIANGLES,0,3);
+        glDrawArrays(GL_TRIANGLES,0,6);
         // check and call events and swap the buffers
 
         // Function swap the  front and back buffer of the specific window
