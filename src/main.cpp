@@ -1,15 +1,6 @@
-
-#include<stdio.h>
-#include<stdlib.h>
-#include<GL/glew.h>
-#include<glm/glm.hpp>
-#include<GLFW/glfw3.h>
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<sstream>
-
-using namespace std;
+#include "main.h"
+#include "Tile.h"
+// #include "timer.h"
 
 struct ShaderProgramSource{
     string VertexSource;
@@ -107,44 +98,22 @@ int main(){
     if(window==NULL){
         fprintf(stderr,"Failed to open GLFW window.\n");
         glfwTerminate();
-        return-1;
+        return -1;
     }
     // make the context of the specified window current ont he calling thread
     glfwMakeContextCurrent(window);
     glewExperimental = true;
     if( glewInit() != GLEW_OK){
         fprintf(stderr,"Failed to initialize GLEW\n");
-        return-1;
+        return -1;
     }
 
     glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
     
-    GLuint VertexArrayID;
-    // Important ?????
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
 
-    float positions[12] ={
-        -1.0f, 1.0f,
-        -0.97f, 1.0f,
-        -1.0f, 0.65f,
+    Tile* player = new Tile(-1.0, -1.0, .30, .05);
 
-        -1.0f, 0.65f,
-        -0.97f, 1.0f,
-        -0.97f, 0.65f
-    };
-
-    // Create a buffer and store the data into GPU memory
-    unsigned int buffer;
-    glGenBuffers(1,&buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), positions, GL_STATIC_DRAW);
-
-    // telling opengl the size of vertex and it properties
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*2, 0);
-
-    ShaderProgramSource source = ParseShader("res/shaders/Shader.shader");
+    ShaderProgramSource source = ParseShader("../res/shaders/Shader.shader");
    // cout<<source.VertexSource<<endl;
    // cout<<source.FragmentSource<<endl;
     unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
