@@ -1,12 +1,16 @@
 #include "main.h"
+#include "timer.h"
 #include "Tile.h"
 // #include "timer.h"
 
 
 Tile* player;
 Tile* player2;
+Tile* ball;
 
 unsigned int shader;
+
+Timer t60(1.0 / 60);
 
 struct ShaderProgramSource{
     string VertexSource;
@@ -87,6 +91,7 @@ void draw(){
     glUseProgram(shader);
     player->draw();
     player2->draw();
+    ball->draw();
     //glDrawArrays(GL_TRIANGLES,0,6);
 }
 
@@ -99,17 +104,17 @@ void key_input(GLFWwindow* window){
 
     if(up == GLFW_PRESS){
         if((player->y+player->length) < .850000)
-        player->y = player->y + 0.0005;
+        player->y = player->y + 0.05;
     }else if(down == GLFW_PRESS){
         if(player->y > -1.0000000)
-        player->y = player->y - 0.0005;
+        player->y = player->y - 0.05;
     }
     if(w == GLFW_PRESS){
         if((player2->y+player2->length) < .850000)
-        player2->y = player2->y + 0.0005;
+        player2->y = player2->y + 0.05;
     }else if(s == GLFW_PRESS){
         if(player2->y > -1.0000000)
-        player2->y = player2->y - 0.0005;
+        player2->y = player2->y - 0.05;
     }
 }
 
@@ -149,6 +154,7 @@ int main(){
 
     player = new Tile(-1.0, 0.0, .30, .05);
     player2 = new Tile(.95, 0.0, .30, .05);
+    ball = new Tile(0.0, 0.0, .025, .02);
 
     ShaderProgramSource source = ParseShader("../res/shaders/Shader.shader");
    // cout<<source.VertexSource<<endl;
@@ -158,23 +164,26 @@ int main(){
 
     //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     do{
-        // rendering commands here
-       // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        draw();
-        // check and call events and swap the buffers
-        // Function swap the  front and back buffer of the specific window
-        glfwSwapBuffers(window);
-        key_input(window);
+        
+        if(t60.processTick()){
+            // rendering commands here
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            draw();
+            // check and call events and swap the buffers
+            // Function swap the  front and back buffer of the specific window
+            glfwSwapBuffers(window);
+            key_input(window);
 
-        draw();
-
+            draw();
+        }
         // checks if any events are triggered (like keyboard or mouse)
         glfwPollEvents();
     }
     while(glfwGetKey(window,GLFW_KEY_ESCAPE)!=GLFW_PRESS && glfwWindowShouldClose(window)==0);
 
     glDeleteProgram(shader);
-
+    glDeleteShader(shader);
+    glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
 }
