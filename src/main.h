@@ -23,7 +23,7 @@ struct color_t {
 struct VAO *create2DObject(GLenum primitive_mode, int numVertices, const float *vertex_buffer_data);
 // struct VAO *create3DObject(GLenum primitive_mode, int numVertices, const GLfloat *vertex_buffer_data, const GLfloat red, const GLfloat green, const GLfloat blue, GLenum fill_mode = GL_FILL);
 // struct VAO *create3DObject(GLenum primitive_mode, int numVertices, const GLfloat *vertex_buffer_data, const color_t color, GLenum fill_mode = GL_FILL);
-void draw3DObject(struct VAO *vao);
+void draw2DObject(struct VAO *vao, GLenum mode, int numVertices, const float *vertex_buffer);
 
 struct VAO {
     GLuint VertexArrayID;

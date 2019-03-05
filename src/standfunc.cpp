@@ -19,9 +19,9 @@ struct VAO* create2DObject(GLenum mode, int numVertices, const float* vertex_buf
 
     glGenBuffers(1,&(vao->VertexBuffer));
     glBindBuffer(GL_ARRAY_BUFFER, vao->VertexBuffer);
-    for(int i = 0;i<12;i++){
-        printf("%f\n",vertex_buffer[i]);
-    }
+    // for(int i = 0;i<12;i++){
+    //     printf("%f\n",vertex_buffer[i]);
+    // }
     glBufferData(GL_ARRAY_BUFFER, numVertices*sizeof(float), vertex_buffer, GL_STREAM_DRAW);
 
     // telling opengl the size of vertex and it properties
@@ -29,4 +29,15 @@ struct VAO* create2DObject(GLenum mode, int numVertices, const float* vertex_buf
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*2, 0);
 
     return vao;
+}
+
+void draw2DObject(struct VAO* vao, GLenum mode, int numVertices, const float* vertex_buffer){
+
+    glBindVertexArray(vao->VertexArrayID);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vao->VertexBuffer);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, numVertices*sizeof(float), vertex_buffer);
+
+    glDrawArrays(mode, 0, 6);
+
 }

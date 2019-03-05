@@ -19,13 +19,37 @@ Tile::Tile(float x, float y, float length, float width){
                 }
             }
         }
-        for(int i = 0;i<2;i++){
+    for(int i = 0;i<2;i++){
         for(int j = 0;j<2;j++){
-            if(i || j){
+        if(i || j){
+            vertex_buffer[k++]=this->x + i*width;
+            vertex_buffer[k++]=this->y + j*length;
+            }
+        }
+    }
+    this->object = create2DObject(GL_TRIANGLES, 12, vertex_buffer);
+}
+
+void Tile::draw(){
+
+    float vertex_buffer[12]= {};
+    int k = 0;
+    for(int i = 0;i<2;i++){
+        for(int j = 0;j<2;j++){
+            if(!(i && j)){
                 vertex_buffer[k++]=this->x + i*width;
                 vertex_buffer[k++]=this->y + j*length;
                 }
             }
         }
-        this->object = create2DObject(GL_TRIANGLES, 12, vertex_buffer);
+    for(int i = 0;i<2;i++){
+        for(int j = 0;j<2;j++){
+        if(i || j){
+            vertex_buffer[k++]=this->x + i*width;
+            vertex_buffer[k++]=this->y + j*length;
+            }
+        }
+    }
+    draw2DObject(this->object, GL_TRIANGLES, 12, vertex_buffer);
+
 }

@@ -2,6 +2,10 @@
 #include "Tile.h"
 // #include "timer.h"
 
+
+Tile* player;
+unsigned int shader;
+
 struct ShaderProgramSource{
     string VertexSource;
     string FragmentSource;
@@ -75,7 +79,24 @@ static int CreateShader(const string& vertexShader, const string& fragmentShader
     return program;
 }
 
+void draw(){
 
+    glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(shader);
+    player->draw();
+    //glDrawArrays(GL_TRIANGLES,0,6);
+}
+
+void key_input(GLFWwindow* window){
+    int up = glfwGetKey(window, GLFW_KEY_UP);
+    int down = glfwGetKey(window, GLFW_KEY_DOWN);
+    
+    if(up == GLFW_PRESS){
+        player->y = player->y + 0.0005;
+    }else if(down == GLFW_PRESS){
+        player->y = player->y - 0.0005;
+    }
+}
 
 int main(){
 
@@ -111,25 +132,26 @@ int main(){
     glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
     
 
-    Tile* player = new Tile(-1.0, -1.0, .30, .05);
+    player = new Tile(-1.0, -1.0, .30, .05);
 
     ShaderProgramSource source = ParseShader("../res/shaders/Shader.shader");
    // cout<<source.VertexSource<<endl;
    // cout<<source.FragmentSource<<endl;
-    unsigned int shader = CreateShader(source.VertexSource, source.FragmentSource);
+    shader = CreateShader(source.VertexSource, source.FragmentSource);
     glUseProgram(shader);
 
     //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     do{
         // rendering commands here
        // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glDrawArrays(GL_TRIANGLES,0,6);
+        draw();
         // check and call events and swap the buffers
-
         // Function swap the  front and back buffer of the specific window
         glfwSwapBuffers(window);
+        key_input(window);
+
+        draw();
+
         // checks if any events are triggered (like keyboard or mouse)
         glfwPollEvents();
     }
