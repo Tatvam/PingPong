@@ -4,6 +4,8 @@
 
 
 Tile* player;
+Tile* player2;
+
 unsigned int shader;
 
 struct ShaderProgramSource{
@@ -84,6 +86,7 @@ void draw(){
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shader);
     player->draw();
+    player2->draw();
     //glDrawArrays(GL_TRIANGLES,0,6);
 }
 
@@ -91,12 +94,22 @@ void key_input(GLFWwindow* window){
     int up = glfwGetKey(window, GLFW_KEY_UP);
     int down = glfwGetKey(window, GLFW_KEY_DOWN);
     
+    int w = glfwGetKey(window, GLFW_KEY_W);
+    int s = glfwGetKey(window, GLFW_KEY_S);
+
     if(up == GLFW_PRESS){
         if((player->y+player->length) < .850000)
         player->y = player->y + 0.0005;
     }else if(down == GLFW_PRESS){
         if(player->y > -1.0000000)
         player->y = player->y - 0.0005;
+    }
+    if(w == GLFW_PRESS){
+        if((player2->y+player2->length) < .850000)
+        player2->y = player2->y + 0.0005;
+    }else if(s == GLFW_PRESS){
+        if(player2->y > -1.0000000)
+        player2->y = player2->y - 0.0005;
     }
 }
 
@@ -134,7 +147,8 @@ int main(){
     glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
     
 
-    player = new Tile(-1.0, -1.0, .30, .05);
+    player = new Tile(-1.0, 0.0, .30, .05);
+    player2 = new Tile(.95, 0.0, .30, .05);
 
     ShaderProgramSource source = ParseShader("../res/shaders/Shader.shader");
    // cout<<source.VertexSource<<endl;
