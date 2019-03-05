@@ -92,8 +92,10 @@ void key_input(GLFWwindow* window){
     int down = glfwGetKey(window, GLFW_KEY_DOWN);
     
     if(up == GLFW_PRESS){
+        if((player->y+player->length) < .850000)
         player->y = player->y + 0.0005;
     }else if(down == GLFW_PRESS){
+        if(player->y > -1.0000000)
         player->y = player->y - 0.0005;
     }
 }
