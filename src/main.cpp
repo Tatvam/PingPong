@@ -1,12 +1,13 @@
 #include "main.h"
 #include "timer.h"
 #include "Tile.h"
+#include "ball.h"
 // #include "timer.h"
 
 
 Tile* player;
 Tile* player2;
-Tile* ball;
+Ball* ball;
 
 unsigned int shader;
 
@@ -91,7 +92,7 @@ void draw(){
     glUseProgram(shader);
     player->draw();
     player2->draw();
-    ball->draw();
+    ball->move();
     //glDrawArrays(GL_TRIANGLES,0,6);
 }
 
@@ -154,7 +155,7 @@ int main(){
 
     player = new Tile(-1.0, 0.0, .30, .05);
     player2 = new Tile(.95, 0.0, .30, .05);
-    ball = new Tile(0.0, 0.0, .025, .02);
+    ball = new Ball(0.0, 0.0, .025, .02, 1, 1);
 
     ShaderProgramSource source = ParseShader("../res/shaders/Shader.shader");
    // cout<<source.VertexSource<<endl;
