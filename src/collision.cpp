@@ -14,7 +14,7 @@ void CollisionResolution(int wp, Tile* player1, Tile* player2, Ball* ball){
            
     }else {
         ball->Vx = -ball->Vx;
-        ball->x = player2->x;
+        ball->x = player2->x  - ball->width;
     }
 }
 
@@ -28,7 +28,9 @@ void CollisionDetection(Tile *player1, Tile *player2, Ball *ball){
     bool collisionY2 = (ball->y <= (player2->y + player2->length)) && ball->y >=player2->y;
 
     if(collisionX2 && collisionY2)
-    cout<<"collision happened at "<<ball->x<<" "<<ball->y<<endl;
+        cout<<"collision happened at "<<ball->x<<" "<<ball->y<<endl;
+    if(collisionX1 && collisionY1)
+        cout<<"collision happened at "<<ball->x<<" "<<ball->y<<endl;
 
     if(collisionX1 && collisionY1){
         CollisionResolution(1, player1, player2, ball);
