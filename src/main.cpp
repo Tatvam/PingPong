@@ -2,13 +2,14 @@
 #include "timer.h"
 #include "Tile.h"
 #include "ball.h"
+#include "collision.h"
 // #include "timer.h"
 
 
 Tile* player;
 Tile* player2;
 Ball* ball;
-
+int check_lose = 0;
 unsigned int shader;
 
 Timer t60(1.0 / 60);
@@ -90,11 +91,22 @@ void draw(){
 
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shader);
-    player->draw();
-    player2->draw();
-    ball->move();
+    if(!check_lose){
+        player->draw();
+        player2->draw();
+        ball->move();
+        CollisionDetection(player, player2, ball);
+        check_lose = check_who_lose(ball);
+    }else if(check_lose == 1){
+        player->draw();
+    }else{
+        player2->draw();
+    }
+    
     //glDrawArrays(GL_TRIANGLES,0,6);
 }
+
+// Input from Keyboard
 
 void key_input(GLFWwindow* window){
     int up = glfwGetKey(window, GLFW_KEY_UP);
@@ -102,6 +114,8 @@ void key_input(GLFWwindow* window){
     
     int w = glfwGetKey(window, GLFW_KEY_W);
     int s = glfwGetKey(window, GLFW_KEY_S);
+
+    int space = glfwGetKey(window, GLFW_KEY_SPACE);
 
     if(up == GLFW_PRESS){
         if((player->y+player->length) < .850000)
@@ -116,6 +130,10 @@ void key_input(GLFWwindow* window){
     }else if(s == GLFW_PRESS){
         if(player2->y > -1.0000000)
         player2->y = player2->y - 0.05;
+    }
+
+    if(space == GLFW_PRESS){
+        ball->stuck = 1;
     }
 }
 

@@ -13,7 +13,7 @@ class Ball : public Tile{
             {
                 this->Vx = Vx;
                 this->Vy = Vy;
-                this->stuck = 1;
+                this->stuck = 0;
             }
         void move();
 };
