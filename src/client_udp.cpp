@@ -6,7 +6,7 @@ struct network_data prepare_client(struct network_data server) {
     }
 
 
-    if (bind(server.sock, (struct sockaddr*)&server.sockinfo, sizeof(struct sockaddr)) < 0) {
+    if (connect(server.sock, (struct sockaddr*)&server.sockinfo, sizeof(struct sockaddr)) < 0) {
         perror("bind client error");
     }
     return server;

@@ -14,7 +14,7 @@ struct network_data{
 struct network_data prepare_server(struct network_data server);
 void *send_data(void* server);
 void *receive_data(void* server);
-void* server_receive_loop(void *arg);
+//void* server_receive_loop(void *arg);
 //void* server_send_loop(void *arg);
 
 
