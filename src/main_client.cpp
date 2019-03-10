@@ -3,14 +3,21 @@
 #include "Tile.h"
 #include "ball.h"
 #include "collision.h"
+#include "client_udp.h"
+
 // #include "timer.h"
 
+#define PORT 8080
 
 Tile* player;
 Tile* player2;
 Ball* ball;
 int check_lose = 0;
 unsigned int shader;
+
+
+pthread_t sendt;
+pthread_t recievet;
 
 Timer t60(1.0 / 60);
 
@@ -143,6 +150,21 @@ int main(){
         fprintf( stderr , "Failed to initialize GLFW\n");
         return -1;
     }
+
+    // Connect to the server------------------------------
+
+    struct network_data server;
+
+    server.sockinfo.sin_family = AF_INET; 
+    server.sockinfo.sin_port = htons(PORT); 
+    server.sockinfo.sin_addr.s_addr = INADDR_ANY;
+    inet_aton("127.0.0.1",&(server.sockinfo.sin_addr));
+
+    server = prepare_client(server);
+    pthread_create(&sendt, NULL, send_to_server, (void *)&server);
+    pthread_create(&recievet, NULL, recieve_from_server, (void *)&server);
+
+    //-----------------------------------------------------
 
     // set hints for the next call to glfwcreatewindow
 

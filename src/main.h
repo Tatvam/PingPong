@@ -11,6 +11,11 @@
 #include<string>
 #include<sstream>
 #include<vector>
+#include<sys/socket.h>
+#include<sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include<pthread.h>
 
 using namespace std;
 
