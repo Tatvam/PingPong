@@ -152,6 +152,7 @@ int main(){
      // Creating server and connecting to the client--------
 
     struct network_data server,client;
+    void* client1;
     server.sockinfo.sin_family = AF_INET;
     server.sockinfo.sin_port = htons(PORT);
     server.sockinfo.sin_addr.s_addr = INADDR_ANY;
@@ -159,6 +160,8 @@ int main(){
     server = prepare_server(server);
     client.sock = server.sock;
     pthread_create(&recievet, NULL, receive_data, (void *)&client);
+    pthread_join(recievet,&client1);
+    client = *(struct network_data *)client1;
     pthread_create(&sendt, NULL, send_data, (void *)&client);
 
     //-----------------------------------------------------

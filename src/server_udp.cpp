@@ -23,15 +23,20 @@ void *send_data(void* serv) {
     struct network_data* client = (struct network_data*)serv;
     socklen_t addr_size = sizeof(struct sockaddr);
     char buffer[] = "Hello from server";
+    //cout<<client->sockinfo.sin_port<<endl;
     sendto(client->sock, buffer, sizeof(buffer), 0, (struct sockaddr*)&client->sockinfo, addr_size);
+   
+
 }
 
 void *receive_data(void* serv) {
-    struct network_data* client = (struct network_data*)serv;
+    struct network_data client = *(struct network_data*)serv;
     socklen_t addr_size = sizeof(struct sockaddr);
     int buffer[1000];
-    recvfrom(client->sock, buffer, sizeof(buffer), 0, (struct sockaddr*)&client->sockinfo, &addr_size);
+    recvfrom(client.sock, buffer, sizeof(buffer), 0, (struct sockaddr*)&client.sockinfo, &addr_size);
     printf("%s\n",buffer);
+    //cout<<client.sockinfo.sin_port<<endl;
+    pthread_exit(&client); 
 }
 
  
